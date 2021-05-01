@@ -1,10 +1,10 @@
 package com.example.VaccineAvailabilityBot;
 
-public class VaccineAvaibility {
+public class VaccineAvailability {
 
 	private final String content;
 
-	public VaccineAvaibility( String content) {
+	public VaccineAvailability( String content) {
 		this.content = content;
 	}
 

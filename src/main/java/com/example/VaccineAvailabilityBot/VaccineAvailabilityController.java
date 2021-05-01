@@ -13,13 +13,13 @@ import io.restassured.path.json.JsonPath;
 import static io.restassured.RestAssured.given;
 
 @RestController
-public class VaccineAvaibilityController {
+public class VaccineAvailabilityController {
 
-	@GetMapping("/checkAvaibility")
-	public VaccineAvaibility greeting(@RequestParam(value = "name", defaultValue = "World") String name) {
+	@GetMapping("/checkAvailability")
+	public VaccineAvailability greeting(@RequestParam(value = "name", defaultValue = "World") String name) {
 		String response = checkAvailability();
 		System.out.println(response);
-		return new VaccineAvaibility(response);
+		return new VaccineAvailability(response);
 	}
 
 	@SuppressWarnings("null")
