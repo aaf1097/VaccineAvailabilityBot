@@ -46,11 +46,12 @@ public class VaccineAvailabilityController {
 				if (ageLimit == 18) {
 					count++;
 //						System.out.println(js.getString("centers["+i+"].name"));
-					data.append("|" + count + "|");
+					if(count>1)
+					data.append(",");
 					data.append(js.getString("centers[" + i + "].name") + "|");
 					data.append(js.getString("centers[" + i + "].sessions[" + j + "].date") + "|");
 					data.append(js.getString("centers[" + i + "].sessions[" + j + "].vaccine") + "|");
-					data.append(js.getString("centers[" + i + "].sessions[" + j + "].available_capacity") + "|");
+					data.append(js.getString("centers[" + i + "].sessions[" + j + "].available_capacity"));
 //						data.append("\n");
 				}
 			}
