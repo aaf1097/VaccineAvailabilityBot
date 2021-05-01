@@ -16,20 +16,20 @@ import static io.restassured.RestAssured.given;
 public class VaccineAvailabilityController {
 
 	@GetMapping("/checkAvailability")
-	public VaccineAvailability greeting(@RequestParam(value = "name", defaultValue = "World") String name) {
-		String response = checkAvailability();
+	public VaccineAvailability greeting(@RequestParam(value = "district", defaultValue = "152") String name) {
+		String response = checkAvailability(name);
 		System.out.println(response);
 		return new VaccineAvailability(response);
 	}
 
 	@SuppressWarnings("null")
-	private static String checkAvailability() {
+	private static String checkAvailability(String district) {
 		RestAssured.baseURI = "https://cdn-api.co-vin.in/api/";
 
 		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd-MM-yyy");
 		LocalDateTime now = LocalDateTime.now();
 
-		String res = given().header("Content-Type", "application/json").queryParam("district_id", "151")
+		String res = given().header("Content-Type", "application/json").queryParam("district_id", district)
 				.queryParam("date", dtf.format(now)).when().get("v2/appointment/sessions/public/calendarByDistrict")
 				.then().extract().asString();
 
