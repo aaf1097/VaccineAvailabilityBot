@@ -1,36 +1,67 @@
 package com.example.VaccineAvailabilityBot;
 
-import static io.restassured.RestAssured.given;
+//import static io.restassured.RestAssured.given;
 
-import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.Scanner;
 
 import org.springframework.stereotype.Component;
 
 import com.opencsv.CSVReader;
 import com.opencsv.CSVReaderBuilder;
-import com.sun.xml.bind.v2.model.core.AttributePropertyInfo;
+//import com.sun.xml.bind.v2.model.core.AttributePropertyInfo;
 
-import io.restassured.RestAssured;
+//import io.restassured.RestAssured;
 import io.restassured.path.json.JsonPath;
 
 @Component
 public class MicroServices {
 
 	
-	private static String API(String districtId,String age)
-	{
-		RestAssured.baseURI = "https://cdn-api.co-vin.in/api/";
+	private static String apiJava(String districtId) throws Exception {
 		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd-MM-yyy");
 		LocalDateTime now = LocalDateTime.now();
-		String res = given().header("Content-Type", "application/json").queryParam("district_id", districtId)
-				.queryParam("date", dtf.format(now)).when().get("v2/appointment/sessions/public/calendarByDistrict")
-				.then().extract().asString();
-		return res;
+		URL url = new URL(
+				"https://cdn-api.co-vin.in/api/v2/appointment/sessions/public/calendarByDistrict?district_id="+districtId+"&date="+dtf.format(now));
+		String inline = "";
+		HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+		conn.setRequestMethod("GET");
+		conn.connect();
+
+		// Getting the response code
+		int responsecode = conn.getResponseCode();
+
+		if (responsecode != 200) {
+			throw new RuntimeException("HttpResponseCode: " + responsecode);
+		} else {
+
+			Scanner scanner = new Scanner(url.openStream());
+			// Write all the JSON data into a string using a scanner
+			while (scanner.hasNext()) {
+				inline += scanner.nextLine();
+			}
+			// Close the scanner
+			scanner.close();
+		}
+		
+		return inline;
 	}
+	
+//	private static String API(String districtId,String age)
+//	{
+//		RestAssured.baseURI = "https://cdn-api.co-vin.in/api/";
+//		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd-MM-yyy");
+//		LocalDateTime now = LocalDateTime.now();
+//		String res = given().header("Content-Type", "application/json").queryParam("district_id", districtId)
+//				.queryParam("date", dtf.format(now)).when().get("v2/appointment/sessions/public/calendarByDistrict")
+//				.then().extract().asString();
+//		return res;
+//	}
 	
 	private static String getDristrictCode(String state,String districtName) throws Exception {
 		String code=null;
@@ -66,7 +97,8 @@ public class MicroServices {
 		if(district==null)
 			return "Incorrect State or District";
 		
-		String res=API(district,age);
+		String res=apiJava(district);
+//				API(district,age);
 		JsonPath js = new JsonPath(res);
 		int cap = 0;
 		int ageLimit = 0;
