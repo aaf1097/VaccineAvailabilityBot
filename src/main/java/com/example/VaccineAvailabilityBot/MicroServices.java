@@ -36,9 +36,10 @@ public class MicroServices {
 		// Getting the response code
 		int responsecode = conn.getResponseCode();
 
-		if (responsecode != 200) {
-			throw new RuntimeException("HttpResponseCode: " + responsecode);
-		} else {
+// 		if (responsecode != 200) {
+// 			throw new RuntimeException("HttpResponseCode: " + responsecode);
+// 		} else
+// 		{
 
 			Scanner scanner = new Scanner(url.openStream());
 			// Write all the JSON data into a string using a scanner
@@ -47,7 +48,7 @@ public class MicroServices {
 			}
 			// Close the scanner
 			scanner.close();
-		}
+// 		}
 		
 		return inline;
 	}
