@@ -53,7 +53,8 @@ public class MicroServices {
 			}
 		}
 		
-		
+		fileReader.close();
+		reader.close();
 		return code;
 	}
 	
