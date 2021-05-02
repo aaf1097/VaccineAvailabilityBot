@@ -38,7 +38,7 @@ public class MicroServices {
 		String dt=districtName.replaceAll("%20", " ");
 		FileReader fileReader =null;
 		List<String[]> data= null;
-		fileReader = new FileReader(System.getProperty("user.dir")+"StateDistrict.csv");
+		fileReader = new FileReader(System.getProperty("user.dir")+"/StateDistrict.csv");
 		CSVReader reader = new CSVReaderBuilder(fileReader).build();
 		data=reader.readAll();
 		for(String row[]:data)
